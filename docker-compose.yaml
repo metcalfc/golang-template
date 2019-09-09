@@ -1,0 +1,17 @@
+version: "3.6"
+
+services:
+  github-repo-scaffold-svc:
+    image: metcalfc/github-repo-template
+    build:
+      context: ./services/github-repo
+
+  docker-hub-repo-scaffold-svc:
+    image: metcalfc/docker-hub-repo-template
+    build:
+      context: ./services/docker-hub-repo
+
+  golang-scaffold-svc:
+    image: metcalfc/golang-template
+    build:
+      context: ./services/golang
