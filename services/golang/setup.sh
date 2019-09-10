@@ -15,9 +15,9 @@ curl -XPOST -u ${username}:${accessToken} https://api.github.com/user/repos -d '
 echo "* You need to login to Docker Hub and create the repo."
 echo "* You need to login to GitHub and create the secretes for DOCKER_USERNAME/DOCKER_PASSWORD."
 
-find /project \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s/{{PROJECT}}/${repoName}/g"
-find /project \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s/{{GITHUB_ORG}}/${username}/g"
-find /project \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s/{{HUB_USER}}/${docker_username}/g"
+find /project \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i '' "s/{{PROJECT}}/${repoName}/g"
+find /project \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i '' "s/{{GITHUB_ORG}}/${username}/g"
+find /project \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i '' "s/{{HUB_USER}}/${docker_username}/g"
 
 cp -r /files/* /project
 
