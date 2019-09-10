@@ -5,86 +5,25 @@ services:
   - apiVersion: v1alpha1
     kind: ServiceTemplate
     metadata:
-      name: github-repo
-      platforms:
-        - linux
-    spec:
-      description: Create new GitHub repo
-      icon: https://raw.githubusercontent.com/metcalfc/golang-template/master/img/github.png
-      source:
-        image: metcalfc/github-repo-template
-      title: GitHub repo
-      parameters:
-        - name: username
-          description: Username
-          type: string
-        - name: accessToken
-          description: Access token
-          type: string
-        - name: repoName
-          description: Repository name
-          type: string
-
-  - apiVersion: v1alpha1
-    kind: ServiceTemplate
-    metadata:
-      name: docker-hub-repo
-      platforms:
-        - linux
-    spec:
-      description: Connect to Docker Hub
-      icon: https://raw.githubusercontent.com/metcalfc/golang-template/master/img/docker.png
-      source:
-        image: metcalfc/docker-hub-repo-template
-      title: Connect to Docker Hub
-      parameters:
-        - name: username
-          description: Username
-          type: string
-        - name: password
-          description: Password
-          type: string
-        - name: repoName
-          description: Repository name
-          type: string
-
-  - apiVersion: v1alpha1
-    kind: ServiceTemplate
-    metadata:
       name: golang-template
       platforms:
         - linux
     spec:
       description: Golang Application with GoReleaser
-      icon: https://raw.githubusercontent.com/metcalfc/golang-template/master/img/go.png
+      icon: https://raw.githubusercontent.com/metcalfc/golang-template/master/img/golang.png
       source:
         image: metcalfc/golang-template
       title: Golang Application with GoReleaser
       parameters:
-        - name: ipAddress
-          description: IP address
-          type: string
         - name: username
-          description: SSH username
+          description: GitHub Username
           type: string
-        - name: password
-          description: SSH password
+        - name: docker_username
+          description: Docker Hub Username
           type: string
-
-templates:
-  - apiVersion: v1alpha1
-    kind: ApplicationTemplate
-    metadata:
-      name: golang-template
-      platforms:
-        - linux
-    spec:
-      description: Golang Application with GoReleaser, Github, and Docker
-      services:
-        - name: github-repo
-          serviceId: github-repo
-        - name: docker-hub-repo
-          serviceId: docker-hub-repo
-        - name: golang-template
-          serviceId: golang-template
-      title: Golang Application with GoReleaser, Github, and Docker
+        - name: accessToken
+          description: GitHub Access token
+          type: string
+        - name: repoName
+          description: GitHub / Docker Hub Repository name
+          type: string
