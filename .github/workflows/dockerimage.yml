@@ -14,8 +14,8 @@ jobs:
       run: docker build ./services/golang/ --file Dockerfile --tag metcalfc/golang-template:${GITHUB_SHA}
     - name: Tag the latest
       run: docker tag metcalfc/golang-template:${GITHUB_SHA} metcalfc/golang-template:latest
-    - uses: actions/docker/login@master
     - name: Docker Login
+      uses: actions/docker/login@master
       env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
