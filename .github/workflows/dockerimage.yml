@@ -12,7 +12,6 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build the Docker image
       run: docker-compose build 
-  push:
     - name: Tag the latest
       run: docker tag metcalfc/golang-template:latest metcalfc/golang-template:${GITHUB_SHA} 
     - name: Docker Login
@@ -21,5 +20,4 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     - name: Push the Docker image
-      needs: [build]
       run: docker push metcalfc/golang-template:${GITHUB_SHA} && docker push metcalfc/golang-template:latest
