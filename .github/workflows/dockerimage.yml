@@ -17,7 +17,9 @@ jobs:
           DOCKER_REGISTRY_URL: docker.io
     - uses: actions/checkout@v1
     - name: Build the Docker image
-      run: docker-compose build 
+      run: |
+        docker-compose build
+        docker-compose push
     - name: Tag the latest
       run: docker tag metcalfc/golang-template:latest metcalfc/golang-template:${GITHUB_SHA} 
     - name: Push the Docker image
