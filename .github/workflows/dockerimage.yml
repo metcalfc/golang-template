@@ -20,4 +20,7 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     - name: Push the Docker image
-      run: docker push metcalfc/golang-template:${GITHUB_SHA} && docker push metcalfc/golang-template:latest
+      run: |
+        echo "SHA: ${GITHUB_SHA}"
+        docker push metcalfc/golang-template:${GITHUB_SHA} && docker push metcalfc/golang-template:latest
+      shell: bash
