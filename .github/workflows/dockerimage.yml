@@ -22,6 +22,7 @@ jobs:
     - name: Push the Docker image
       run: |
         echo "SHA: ${GITHUB_SHA}"
+        docker image ls
         docker push metcalfc/golang-template:latest
         docker push metcalfc/golang-template:${GITHUB_SHA}
       shell: bash
