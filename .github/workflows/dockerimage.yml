@@ -1,0 +1,23 @@
+name: Docker Image CI
+
+on: [push]
+
+jobs:
+
+  build:
+ 
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: docker build ./services/golang/ --file Dockerfile --tag metcalfc/golang-template:${GITHUB_SHA}
+    - name: Tag the latest
+      run: docker tag metcalfc/golang-template:${GITHUB_SHA} metcalfc/golang-template:latest
+    - name: Docker Login
+      uses: actions/docker/login@master
+      env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Push the Docker image
+      run: docker push metcalfc/golang-template:${GITHUB_SHA} && docker push metcalfc/golang-template:latest
