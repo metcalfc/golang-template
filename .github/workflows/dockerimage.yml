@@ -9,15 +9,21 @@ jobs:
     runs-on: ubuntu-latest
  
     steps:
-    - uses: actions/checkout@v1
-    - name: Build the Docker image
-      run: docker build ./services/golang/ --file Dockerfile --tag metcalfc/golang-template:${GITHUB_SHA}
-    - name: Tag the latest
-      run: docker tag metcalfc/golang-template:${GITHUB_SHA} metcalfc/golang-template:latest
     - name: Docker Login
       uses: actions/docker/login@master
       env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_REGISTRY_URL: docker.io
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: docker-compose build 
+    - name: Tag the latest
+      run: docker tag metcalfc/golang-template:latest metcalfc/golang-template:${GITHUB_SHA} 
     - name: Push the Docker image
-      run: docker push metcalfc/golang-template:${GITHUB_SHA} && docker push metcalfc/golang-template:latest
+      run: |
+        echo "SHA: ${GITHUB_SHA}"
+        docker image ls
+        docker push metcalfc/golang-template:latest
+        docker push metcalfc/golang-template:${GITHUB_SHA}
+      shell: bash
