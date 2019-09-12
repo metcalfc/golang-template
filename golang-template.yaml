@@ -27,3 +27,12 @@ services:
         - name: repoName
           description: GitHub / Docker Hub Repository name
           type: string
+        - name: createRepo
+          defaultValue: "Yes"
+          description: Create GitHub repo
+          type: enum
+          values:
+            - value: "Yes"
+              description: "Yes, create the repo"
+            - value: "No"
+              description: "No, use an existing"

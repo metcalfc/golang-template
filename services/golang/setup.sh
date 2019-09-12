@@ -8,11 +8,16 @@ username=$(echo "${parameters}" | jq -c '.username' --raw-output)
 dockerUsername=$(echo "${parameters}" | jq -c '.dockerUsername' --raw-output)
 accessToken=$(echo "${parameters}" | jq -c '.accessToken' --raw-output)
 repoName=$(echo "${parameters}" | jq -c '.repoName' --raw-output)
+createRepo=$(echo "${parameters}" | jq -c '.createRepo' --raw-output)
 
-echo "* Creating GitHub repo: ${repoName}, user: ${username}"
-curl -XPOST -u ${username}:${accessToken} https://api.github.com/user/repos -d '{"name":"'${repoName}'","description":"Golang Docker and GitHub Starter Kit demo"}'
+if [ $createRepo == "Yes" ]; then
+  echo "* Creating GitHub repo: https://github.com/${username}/${repoName}.git"
+  curl -XPOST -u ${username}:${accessToken} https://api.github.com/user/repos -d '{"name":"'${repoName}'","description":"Golang Docker and GitHub Starter Kit demo"}'
+else
+  echo "* Using existing GitHub repo: https://github.com/${username}/${repoName}.git"
+fi
 
-echo "* You need to login to Docker Hub and create the repo."
+echo "* You need to login to Docker Hub and create ${dockerUsername}/${repoName}"
 echo "* You need to login to GitHub and create the secretes for DOCKER_USERNAME/DOCKER_PASSWORD."
 
 cp -r /files/* /project
