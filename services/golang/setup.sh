@@ -3,7 +3,7 @@
 cat /run/configuration
 
 # parse parameters
-parameters=$(jq -c '.services | map(select(.serviceId == "golang-template"))[0].parameters' /run/configuration)
+parameters=$(jq -c '.services | map(select(.serviceId == "golang-cli"))[0].parameters' /run/configuration)
 username=$(echo "${parameters}" | jq -c '.username' --raw-output)
 dockerUsername=$(echo "${parameters}" | jq -c '.dockerUsername' --raw-output)
 accessToken=$(echo "${parameters}" | jq -c '.accessToken' --raw-output)

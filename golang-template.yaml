@@ -5,7 +5,7 @@ services:
   - apiVersion: v1alpha1
     kind: ServiceTemplate
     metadata:
-      name: golang-template
+      name: golang-cli
       platforms:
         - linux
     spec:
