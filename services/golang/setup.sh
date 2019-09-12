@@ -1,6 +1,7 @@
 #!/bin/sh
 
-cat /run/configuration
+# Uncomment to debug
+#jq . < /run/configuration
 
 # parse parameters
 parameters=$(jq -c '.services | map(select(.serviceId == "golang-cli"))[0].parameters' /run/configuration)
