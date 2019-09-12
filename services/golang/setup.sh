@@ -5,7 +5,7 @@ cat /run/configuration
 # parse parameters
 parameters=$(jq -c '.services | map(select(.serviceId == "golang-template"))[0].parameters' /run/configuration)
 username=$(echo "${parameters}" | jq -c '.username' --raw-output)
-docker_username=$(echo "${parameters}" | jq -c '.docker_username' --raw-output)
+dockerUsername=$(echo "${parameters}" | jq -c '.dockerUsername' --raw-output)
 accessToken=$(echo "${parameters}" | jq -c '.accessToken' --raw-output)
 repoName=$(echo "${parameters}" | jq -c '.repoName' --raw-output)
 
@@ -19,7 +19,7 @@ cp -r /files/* /project
 
 find /project \( -type d -name .git -prune \) -o -type f | xargs sed -i "s/{{PROJECT}}/${repoName}/g"
 find /project \( -type d -name .git -prune \) -o -type f | xargs sed -i "s/{{GITHUB_ORG}}/${username}/g"
-find /project \( -type d -name .git -prune \) -o -type f | xargs sed -i "s/{{HUB_USER}}/${docker_username}/g"
+find /project \( -type d -name .git -prune \) -o -type f | xargs sed -i "s/{{HUB_USER}}/${dockerUsername}/g"
 
 cd /project
 

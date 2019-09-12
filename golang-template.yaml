@@ -18,7 +18,7 @@ services:
         - name: username
           description: GitHub Username
           type: string
-        - name: docker_username
+        - name: dockerUsername
           description: Docker Hub Username
           type: string
         - name: accessToken
