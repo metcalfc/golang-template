@@ -1,33 +1,47 @@
-PROJECT_NAME := "{{PROJECT}}"
-PKG := "github.com/{{GITHUB_ORG}}/$(PROJECT_NAME)"
-PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
-GO_FILES := $(shell find . -name '*.go' | grep -v /vendor/ | grep -v _test.go)
+VERSION         :=      $(shell cat ./VERSION)
+IMAGE_NAME      :=      {{HUB_USER}}/{{PROJECT}}
 
-.PHONY: all dep lint vet test snapshot release clean
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	OS = linux
+endif
+ifeq ($(UNAME_S),Darwin)
+	OS = darwin
+endif
 
-all: help
+all: build
 
-dep: ## Get the dependencies
-	@go mod download
+run: ## Just run it
+	go run main.go
 
-lint: ## Lint Golang files
-	@golint -set_exit_status ${PKG_LIST}
+build: ## Build local static binary
+	GOOS=${OS} GOARCH=amd64 go build -ldflags="-w -s"
 
-vet: ## Run go vet
-	@go vet ${PKG_LIST}
+test: ## Run tests
+	go test ./... -v
 
-test: ## Run unittests
-	@go test -short ${PKG_LIST}
+fmt: ## Format go files
+	go fmt ./... -v
 
-snapshot: dep ## Build the binary files
-	@goreleaser --snapshot --skip-publish --rm-dist
+image: ## Build local snapshot as an image
+	docker build -t ${IMAGE_NAME} .
 
-release: ## Build and publish a full release
-	@echo "building ${BIN_NAME} ${VERSION} $(GIT_COMMIT)"
-	@goreleaser --rm-dist
+# The actual release is done via a GitHub action that
+# triggers on a new version tag.
+release: ## Release to GitHub
+	git diff-index --quiet HEAD -- || (echo "Git has changes not releaseing." && false)
+	git tag -a $(VERSION) -m "Release" || true
+	git push origin $(VERSION)
 
-clean: ## Remove current build
-	@rm -f $(PROJECT_NAME)/dist
+clean: ## Clean up build artifacts
+	docker images -aq ${IMAGE_NAME} | xargs docker rmi --force || true
+	rm -rf {{PROJECT}} || true
+	rm -rf dist || true
 
-help: ## Display this help screen
-	@grep -h -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+help: ## Show this help message
+	@echo 'usage: make [target] ...'
+	@echo
+	@echo 'targets:'
+	@egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -c 2 -s ':#'
+
+.PHONY: run build test fmt image release help

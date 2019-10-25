@@ -1,5 +1,5 @@
 module github.com/{{GITHUB_ORG}}/{{PROJECT}}
 
-go 1.12
+go 1.13
 
-require github.com/spf13/cobra v0.0.5
+require github.com/gorilla/mux v1.7.3
